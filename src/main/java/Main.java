@@ -10,7 +10,10 @@ public class Main {
                 if(input.equals("exit 0")) {
                     break;
                 }
-                System.out.println(input + ": command not found");
+                else if(input.split(" ")[0].equals("echo")) {
+                    System.out.println(input.substring(input.indexOf(" ") + 1));
+                }
+                else System.out.println(input + ": command not found");
             }
         }
     }
