@@ -51,11 +51,14 @@ public class Main {
                 } else if (command.equals("type")) {
                     System.out.println(type(argument, path));
                 } else if (checkExecutable(command, path) != null) {
-                    ProcessBuilder processBuilder = new ProcessBuilder(command, argument);
+                    String[] argumentParts = argument.split(" ");
+                    String[] arguments = new String[argumentParts.length + 1];
+                    arguments[0] = checkExecutable(command, path);
+                    System.arraycopy(argumentParts, 0, arguments, 1, argumentParts.length);
+                    ProcessBuilder processBuilder = new ProcessBuilder(arguments);
                     processBuilder.redirectErrorStream(true);
                     Process process = processBuilder.start();
                     
-                    // Read the output from the process
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
@@ -63,9 +66,7 @@ public class Main {
                         }
                     }
                     
-                    int exitCode = process.waitFor();
-                    System.out.println(exitCode);
-                    break;
+                    process.waitFor();
                 }
                 else {
                     System.out.println(input + ": command not found");
