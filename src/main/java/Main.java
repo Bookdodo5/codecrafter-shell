@@ -36,7 +36,14 @@ public class Main {
     private static String cd(String argument) {
         try {
             String newDir = argument.trim().isEmpty() ? System.getProperty("user.home") : argument;
-            File dir = new File(newDir);
+            File dir;
+            
+            if (newDir.startsWith("/") || newDir.matches("^[A-Za-z]:.*")) {
+                dir = new File(newDir).getCanonicalFile();
+            } else {
+                dir = new File(System.getProperty("user.dir"), newDir).getCanonicalFile();
+            }
+            
             if (!dir.exists() || !dir.isDirectory()) {
                 return "cd: " + newDir + ": No such file or directory";
             } else {
