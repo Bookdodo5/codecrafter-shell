@@ -53,7 +53,7 @@ public class Main {
                 } else if (checkExecutable(command, path) != null) {
                     String[] argumentParts = argument.split(" ");
                     String[] arguments = new String[argumentParts.length + 1];
-                    arguments[0] = checkExecutable(command, path);
+                    arguments[0] = command;
                     System.arraycopy(argumentParts, 0, arguments, 1, argumentParts.length);
                     ProcessBuilder processBuilder = new ProcessBuilder(arguments);
                     processBuilder.redirectErrorStream(true);
