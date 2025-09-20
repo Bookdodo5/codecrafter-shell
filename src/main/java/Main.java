@@ -71,16 +71,26 @@ public class Main {
                 String PATH = System.getenv("PATH");
                 String[] path = PATH.split(File.pathSeparator);
 
-                if (input.equals("exit 0")) {
-                    break;
-                } else if (command.equals("echo")) {
-                    System.out.println(input.substring(input.indexOf(" ") + 1));
-                } else if (command.equals("type")) {
-                    System.out.println(type(argument, path));
-                } else if (checkExecutable(command, path) != null) {
-                    run(command, argument);
-                } else {
-                    System.out.println(input + ": command not found");
+                switch (command) {
+                    case "exit" -> {
+                        return;
+                    }
+                    case "echo" -> {
+                        System.out.println(argument);
+                    }
+                    case "type" -> {
+                        System.out.println(type(argument, path));
+                    }
+                    case "pwd" -> {
+                        System.out.println(System.getProperty("user.dir"));
+                    }
+                    default -> {
+                        if (checkExecutable(command, path) != null) {
+                            run(command, argument);
+                        } else {
+                            System.out.println(input + ": command not found");
+                        }
+                    }
                 }
             }
         }
