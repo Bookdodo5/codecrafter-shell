@@ -19,7 +19,7 @@ public class Main {
     }
 
     private static String type(String command, String[] path) {
-        List<String> builtins = List.of("echo", "type", "exit", "ls", "pwd");
+        List<String> builtins = List.of("echo", "type", "exit", "ls", "pwd", "cd");
 
         if (builtins.contains(command)) {
             return command + " is a shell builtin";
@@ -83,6 +83,19 @@ public class Main {
                     }
                     case "pwd" -> {
                         System.out.println(System.getProperty("user.dir"));
+                    }
+                    case "cd" -> {
+                        try {
+                            String newDir = argument.trim().isEmpty() ? System.getProperty("user.home") : argument;
+                            File dir = new File(newDir);
+                            if (!dir.exists() || !dir.isDirectory()) {
+                                System.out.println("cd: " + newDir + ": No such directory");
+                            } else {
+                                System.setProperty("user.dir", dir.getCanonicalPath());
+                            }
+                        } catch (IOException e) {
+                            System.out.println("cd: " + e.getMessage());
+                        }
                     }
                     default -> {
                         if (checkExecutable(command, path) != null) {
