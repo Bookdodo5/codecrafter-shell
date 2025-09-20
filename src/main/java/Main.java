@@ -89,7 +89,7 @@ public class Main {
                             String newDir = argument.trim().isEmpty() ? System.getProperty("user.home") : argument;
                             File dir = new File(newDir);
                             if (!dir.exists() || !dir.isDirectory()) {
-                                System.out.println("cd: " + newDir + ": No such directory");
+                                System.out.println("cd: " + newDir + ": No such file or directory");
                             } else {
                                 System.setProperty("user.dir", dir.getCanonicalPath());
                             }
