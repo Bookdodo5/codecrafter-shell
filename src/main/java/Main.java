@@ -35,7 +35,7 @@ public class Main {
 
     private static String cd(String argument) {
         try {
-            String newDir = argument.trim().isEmpty() ? System.getProperty("user.home") : argument;
+            String newDir = argument.trim().equals("~") ? System.getProperty("user.home") : argument;
             File dir;
             
             if (newDir.startsWith("/") || newDir.matches("^[A-Za-z]:.*")) {
