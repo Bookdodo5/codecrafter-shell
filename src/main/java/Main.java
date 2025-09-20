@@ -100,7 +100,10 @@ public class Main {
                         System.out.println(System.getProperty("user.dir"));
                     }
                     case "cd" -> {
-                        System.out.println(cd(argument));
+                        String cdResult = cd(argument);
+                        if (!cdResult.isEmpty()) {
+                            System.out.println(cdResult);
+                        }
                     }
                     default -> {
                         if (checkExecutable(command, path) != null) {
