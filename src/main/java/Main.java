@@ -15,16 +15,7 @@ public class Main {
         return null;
     }
 
-    private static String type(String input) {
-        String[] parts = input.split("\\s+");
-        if (parts.length < 2) {
-            return "type: missing argument";
-        }
-        
-        String command = parts[1];
-        String PATH = System.getenv("PATH");
-        String[] path = PATH.split(File.pathSeparator);
-
+    private static String type(String command, String[] path) {
         List<String> builtins = List.of("echo", "type", "exit", "ls");
 
         if (builtins.contains(command)) {
@@ -45,13 +36,26 @@ public class Main {
             while (true) {
                 System.out.print("$ ");
                 String input = scanner.nextLine();
+                String command = input.split(" ")[0];
+                String argument = input.substring(input.indexOf(" ") + 1);
+
+                String PATH = System.getenv("PATH");
+                String[] path = PATH.split(File.pathSeparator);
+
                 if (input.equals("exit 0")) {
                     break;
-                } else if (input.split(" ")[0].equals("echo")) {
+                } else if (command.equals("echo")) {
                     System.out.println(input.substring(input.indexOf(" ") + 1));
-                } else if (input.split(" ")[0].equals("type")) {
-                    System.out.println(type(input));
-                } else {
+                } else if (command.equals("type")) {
+                    System.out.println(type(argument, path));
+                } else if (checkExecutable(command, path) != null) {
+                    ProcessBuilder processBuilder = new ProcessBuilder(command, argument);
+                    processBuilder.redirectErrorStream(true);
+                    Process process = processBuilder.start();
+                    int exitCode = process.waitFor();
+                    System.out.println(exitCode);
+                }
+                else {
                     System.out.println(input + ": command not found");
                 }
             }
