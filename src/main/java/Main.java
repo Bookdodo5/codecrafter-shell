@@ -2,6 +2,8 @@
 import java.util.Scanner;
 import java.util.List;
 import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
 
@@ -52,8 +54,18 @@ public class Main {
                     ProcessBuilder processBuilder = new ProcessBuilder(command, argument);
                     processBuilder.redirectErrorStream(true);
                     Process process = processBuilder.start();
+                    
+                    // Read the output from the process
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    }
+                    
                     int exitCode = process.waitFor();
                     System.out.println(exitCode);
+                    break;
                 }
                 else {
                     System.out.println(input + ": command not found");
