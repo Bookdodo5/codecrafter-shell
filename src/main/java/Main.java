@@ -6,13 +6,10 @@ import java.io.File;
 public class Main {
 
     private static String checkExecutable(String command, String[] path) {
-        String[] extensions = {"", ".exe", ".cmd", ".bat"};
         for (String directory : path) {
-            for (String ext : extensions) {
-                File file = new File(directory, command + ext);
-                if (file.exists() && !file.isDirectory()) {
-                    return file.getAbsolutePath();
-                }
+            File file = new File(directory, command);
+            if (file.exists() && !file.isDirectory() && file.canExecute()) {
+                return file.getAbsolutePath();
             }
         }
         return null;
