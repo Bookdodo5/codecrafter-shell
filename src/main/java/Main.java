@@ -33,6 +33,21 @@ public class Main {
         return command + ": not found";
     }
 
+    private static String cd(String argument) {
+        try {
+            String newDir = argument.trim().isEmpty() ? System.getProperty("user.home") : argument;
+            File dir = new File(newDir);
+            if (!dir.exists() || !dir.isDirectory()) {
+                return "cd: " + newDir + ": No such file or directory";
+            } else {
+                System.setProperty("user.dir", dir.getCanonicalPath());
+                return "";
+            }
+        } catch (IOException e) {
+            return "cd: " + e.getMessage();
+        }
+    }
+
     private static void run(String command, String argument) {
         try {
             String[] argumentParts = argument.split(" ");
@@ -85,17 +100,7 @@ public class Main {
                         System.out.println(System.getProperty("user.dir"));
                     }
                     case "cd" -> {
-                        try {
-                            String newDir = argument.trim().isEmpty() ? System.getProperty("user.home") : argument;
-                            File dir = new File(newDir);
-                            if (!dir.exists() || !dir.isDirectory()) {
-                                System.out.println("cd: " + newDir + ": No such file or directory");
-                            } else {
-                                System.setProperty("user.dir", dir.getCanonicalPath());
-                            }
-                        } catch (IOException e) {
-                            System.out.println("cd: " + e.getMessage());
-                        }
+                        System.out.println(cd(argument));
                     }
                     default -> {
                         if (checkExecutable(command, path) != null) {
