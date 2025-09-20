@@ -19,7 +19,7 @@ public class Main {
     }
 
     private static String type(String command, String[] path) {
-        List<String> builtins = List.of("echo", "type", "exit", "ls");
+        List<String> builtins = List.of("echo", "type", "exit", "ls", "pwd");
 
         if (builtins.contains(command)) {
             return command + " is a shell builtin";
